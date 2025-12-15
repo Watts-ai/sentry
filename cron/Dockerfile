@@ -1,4 +1,4 @@
-ARG BASE_IMAGE
+ARG BASE_IMAGE=ghcr.io/getsentry/sentry:nightly
 FROM ${BASE_IMAGE}
 USER 0
 RUN if [ -n "${HTTP_PROXY}" ]; then echo "Acquire::http::proxy \"${HTTP_PROXY}\";" >> /etc/apt/apt.conf; fi
@@ -7,5 +7,5 @@ RUN if [ -n "${http_proxy}" ]; then echo "Acquire::http::proxy \"${http_proxy}\"
 RUN if [ -n "${https_proxy}" ]; then echo "Acquire::https::proxy \"${https_proxy}\";" >> /etc/apt/apt.conf; fi
 RUN apt-get update && apt-get install -y --no-install-recommends cron && \
     rm -r /var/lib/apt/lists/*
-COPY entrypoint.sh /entrypoint.sh
+COPY cron/entrypoint.sh /entrypoint.sh
 ENTRYPOINT ["/entrypoint.sh"]

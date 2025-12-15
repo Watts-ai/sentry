@@ -1,0 +1,8 @@
+ARG BASE_IMAGE=ghcr.io/getsentry/vroom:nightly
+FROM ${BASE_IMAGE}
+USER 0
+RUN apt-get update && apt-get install -y --no-install-recommends findutils cron && \
+    rm -rf /var/lib/apt/lists/*
+COPY cron/entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
+ENTRYPOINT ["/entrypoint.sh"]
